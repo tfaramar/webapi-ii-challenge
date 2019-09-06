@@ -1,5 +1,6 @@
 const express = require('express');
 const postRouter = require('./posts/postRouter.js');
+const commentRouter = require('./comments/commentRouter.js');
 
 const server = express();
 server.use(express.json());

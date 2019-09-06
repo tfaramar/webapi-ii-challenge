@@ -17,8 +17,23 @@ router.post('/', (req, res) => {
     const contents = req.body.contents;
     if (!title || !contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
-    }
-})
+    } else {
+        db.insert({title, contents})
+        .then(({id}) => {
+            db.findById(id)
+                .then(([post]) => {
+                    res.status(201).json(post);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "There was an error while saving the post to the database" })
+        })
+    }  
+});
 
 router.get('/:id', (req, res) => {
     const id = req.params.id;
@@ -32,5 +47,9 @@ router.get('/:id', (req, res) => {
             }  
         });
 });
+
+router.delete('/:id', (req, res) => {
+    
+})
 
 module.exports = router;
