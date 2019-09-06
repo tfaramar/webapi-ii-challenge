@@ -120,4 +120,17 @@ router.get('/:post_id/comments', (req, res) => {
     });
 });
 
+router.post('/:post_id/comments', (req, res) => {
+    const { post_id } = req.params;
+    const text = req.body.text;
+    db.insertComment({ text, post_id })
+        .then(comment => {
+            res.status(200).json(comment);
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "There was an error while saving the comment to the database" });
+        });
+});
+
 module.exports = router;
